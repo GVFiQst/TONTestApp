@@ -5,6 +5,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation kotlinStdLib
+    implementation kotlinCoroutinesCore
+
+    implementation koinCore
 }
 
 buildscript {
