@@ -1,4 +1,4 @@
-package gvfiqst.tontestapp
+package com.gvfiqst.tontestapp
 
 import org.junit.Test
 
