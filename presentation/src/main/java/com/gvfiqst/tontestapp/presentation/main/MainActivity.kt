@@ -13,5 +13,4 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         setupKoinFragmentFactory()
     }
-
 }
