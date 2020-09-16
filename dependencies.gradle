@@ -21,4 +21,15 @@ ext {
     koinCore = "org.koin:koin-core:$koin_version"
     koinFragment = "org.koin:koin-androidx-fragment:$koin_version"
     koinViewModel = "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    // Retrofit
+    retrofit_version = '2.8.1'
+    retrofit_gson_version = '2.8.1'
+    okhttp_version = '4.7.0'
+    gson_version = '2.8.5'
+    retrofit = "com.squareup.retrofit2:retrofit:$retrofit_version"
+    retrofitGson = "com.squareup.retrofit2:converter-gson:$retrofit_gson_version"
+    okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
+    okhttpLogger = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    gson = "com.google.code.gson:gson:$gson_version"
 }
