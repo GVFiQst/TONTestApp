@@ -84,11 +84,24 @@ abstract class BaseViewModel<State, Action, Effect>(
         invoke(params, this@BaseViewModel, onSuccess, onError)
     }
 
+    protected operator fun <P, R> UseCase<P, R>.invoke(
+        params: P,
+        onSuccess: (R) -> Unit = {}
+    ) {
+        invoke(params, this@BaseViewModel, onSuccess, ::handleError)
+    }
+
     protected operator fun NoParamsUnitUseCase.invoke(
         onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit = ::handleError
     ) {
         invoke(this@BaseViewModel, onSuccess, onError)
+    }
+
+    protected operator fun NoParamsUnitUseCase.invoke(
+        onSuccess: () -> Unit = {}
+    ) {
+        invoke(this@BaseViewModel, onSuccess, ::handleError)
     }
 
     protected operator fun <R> NoParamsUseCase<R>.invoke(
@@ -98,12 +111,25 @@ abstract class BaseViewModel<State, Action, Effect>(
         invoke(this@BaseViewModel, onSuccess, onError)
     }
 
+    protected operator fun <R> NoParamsUseCase<R>.invoke(
+        onSuccess: (R) -> Unit = {}
+    ) {
+        invoke(this@BaseViewModel, onSuccess, ::handleError)
+    }
+
     protected operator fun <P> UnitUseCase<P>.invoke(
         params: P,
         onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit = ::handleError
     ) {
         invoke(params, this@BaseViewModel, onSuccess, onError)
+    }
+
+    protected operator fun <P> UnitUseCase<P>.invoke(
+        params: P,
+        onSuccess: () -> Unit = {}
+    ) {
+        invoke(params, this@BaseViewModel, onSuccess, ::handleError)
     }
 
 }
