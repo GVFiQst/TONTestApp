@@ -9,7 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
-abstract class UnitUseCase {
+abstract class NoParamsUnitUseCase {
 
     protected abstract suspend fun run(): OpResult<Unit>
 
@@ -25,4 +25,5 @@ abstract class UnitUseCase {
                 .withErrorValue(onError)
         }
     }
+
 }
