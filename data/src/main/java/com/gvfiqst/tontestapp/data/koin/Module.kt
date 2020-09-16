@@ -19,6 +19,6 @@ val dataModule = module {
 
     single { ApiFactory.createOmdbApi(get()) }
 
-    single<SearchRepository> { SearchRepositoryImpl(get()) }
+    single<SearchRepository> { SearchRepositoryImpl(get(), get()) }
 
 }

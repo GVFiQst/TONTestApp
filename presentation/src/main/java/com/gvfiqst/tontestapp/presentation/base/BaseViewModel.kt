@@ -54,7 +54,7 @@ abstract class BaseViewModel<State, Action, Effect>(
 
     override fun onCleared() {
         super.onCleared()
-        Log.d("lox", "onCleared()")
+        logger.d(tag, "onCleared()")
         job.cancel()
     }
 
