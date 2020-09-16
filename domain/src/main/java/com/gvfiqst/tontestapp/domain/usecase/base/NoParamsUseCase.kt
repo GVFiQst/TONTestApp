@@ -18,9 +18,16 @@ abstract class NoParamsUseCase<R> {
         onSuccess: (R) -> Unit = {},
         onError: (Throwable) -> Unit = {}
     ) {
-        val deffered = scope.async(Dispatchers.IO) { run() }
+        val deferred = scope.async(Dispatchers.IO) {
+            try {
+                run()
+            } catch (e: Throwable) {
+                OpResult.Error(e)
+            }
+        }
+
         scope.launch {
-            deffered.await()
+            deferred.await()
                 .withSuccessValue(onSuccess)
                 .withErrorValue(onError)
         }

@@ -9,19 +9,18 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
-abstract class UseCase<P, R> {
+abstract class NoParamsUnitUseCase {
 
-    protected abstract suspend fun run(params: P): OpResult<R>
+    protected abstract suspend fun run(): OpResult<Unit>
 
     operator fun invoke(
-        params: P,
         scope: CoroutineScope,
-        onSuccess: (R) -> Unit = {},
+        onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit = {}
     ) {
         val deferred = scope.async(Dispatchers.IO) {
             try {
-                run(params)
+                run()
             } catch (e: Throwable) {
                 OpResult.Error(e)
             }
@@ -33,4 +32,5 @@ abstract class UseCase<P, R> {
                 .withErrorValue(onError)
         }
     }
+
 }
