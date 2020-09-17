@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -38,13 +39,16 @@ dependencies {
     implementation kotlinStdLib
     implementation kotlinCoroutinesCore
     implementation kotlinCoroutinesAndroid
+    implementation kotlinKtx
 
     implementation appCompat
-    implementation kotlinKtx
+    implementation navFragment
+    implementation navUi
 
     implementation koinCore
     implementation koinFragment
     implementation koinViewModel
+    implementation koinAndroidScope
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
