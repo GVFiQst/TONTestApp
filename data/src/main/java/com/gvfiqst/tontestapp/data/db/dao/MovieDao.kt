@@ -14,10 +14,10 @@ interface MovieDao {
     @Query("SELECT * FROM movies")
     suspend fun getAll(): List<MovieDto>
 
-    @Query("SELECT * FROM MOVIES WHERE id=:imdbId")
+    @Query("SELECT * FROM movies WHERE id=:imdbId")
     fun observeById(imdbId: String): Flow<MovieDto>
 
-    @Query("SELECT * FROM MOVIES WHERE id=:imdbId")
+    @Query("SELECT * FROM movies WHERE id=:imdbId")
     suspend fun getById(imdbId: String): MovieDto
 
     @Insert(entity = MovieDto::class, onConflict = OnConflictStrategy.REPLACE)
