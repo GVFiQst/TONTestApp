@@ -16,6 +16,12 @@ ext {
     app_compat_version = '1.2.0'
     appCompat = "androidx.appcompat:appcompat:$app_compat_version"
 
+    // Navigation
+    nav_version = "2.3.0"
+    navFragment = "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    navUi = "androidx.navigation:navigation-ui-ktx:$nav_version"
+    navSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+
     // Koin
     koin_version = '2.1.6'
     koinCore = "org.koin:koin-core:$koin_version"
