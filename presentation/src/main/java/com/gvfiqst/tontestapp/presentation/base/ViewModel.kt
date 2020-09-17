@@ -2,7 +2,6 @@ package com.gvfiqst.tontestapp.presentation.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.gvfiqst.tontestapp.domain.usecase.base.NoParamsUnitUseCase
 import com.gvfiqst.tontestapp.domain.usecase.base.NoParamsUseCase
 import com.gvfiqst.tontestapp.domain.usecase.base.UnitUseCase
@@ -19,10 +18,10 @@ import org.koin.core.inject
 import kotlin.coroutines.CoroutineContext
 
 
-abstract class BaseViewModel<State, Action, Effect>(
+abstract class ViewModel<State, Action, Effect>(
     baseCoroutineContext: CoroutineContext,
     protected var state: State
-) : ViewModel(), CoroutineScope, KoinComponent {
+) : androidx.lifecycle.ViewModel(), CoroutineScope, KoinComponent {
 
     protected val tag by lazy { this.javaClass.simpleName }
 
@@ -49,15 +48,22 @@ abstract class BaseViewModel<State, Action, Effect>(
                     onAction(action)
                 }
             }
+        }.invokeOnCompletion {
+            actions.close()
         }
     }
 
     protected abstract fun onAction(action: Action)
 
-    override fun onCleared() {
-        super.onCleared()
-        logger.d(tag, "onCleared()")
-        job.cancel()
+    fun dispatchDestroy() {
+        launch {
+            onDestroy()
+        }.invokeOnCompletion {
+            job.cancel()
+        }
+    }
+
+    open fun onDestroy() {
     }
 
     fun dispatchAction(action: Action) {
@@ -83,40 +89,40 @@ abstract class BaseViewModel<State, Action, Effect>(
         onSuccess: (R) -> Unit = {},
         onError: (Throwable) -> Unit = ::handleError
     ) {
-        invoke(params, this@BaseViewModel, onSuccess, onError)
+        invoke(params, this@ViewModel, onSuccess, onError)
     }
 
     protected operator fun <P, R> UseCase<P, R>.invoke(
         params: P,
         onSuccess: (R) -> Unit = {}
     ) {
-        invoke(params, this@BaseViewModel, onSuccess, ::handleError)
+        invoke(params, this@ViewModel, onSuccess, ::handleError)
     }
 
     protected operator fun NoParamsUnitUseCase.invoke(
         onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit = ::handleError
     ) {
-        invoke(this@BaseViewModel, onSuccess, onError)
+        invoke(this@ViewModel, onSuccess, onError)
     }
 
     protected operator fun NoParamsUnitUseCase.invoke(
         onSuccess: () -> Unit = {}
     ) {
-        invoke(this@BaseViewModel, onSuccess, ::handleError)
+        invoke(this@ViewModel, onSuccess, ::handleError)
     }
 
     protected operator fun <R> NoParamsUseCase<R>.invoke(
         onSuccess: (R) -> Unit = {},
         onError: (Throwable) -> Unit = ::handleError
     ) {
-        invoke(this@BaseViewModel, onSuccess, onError)
+        invoke(this@ViewModel, onSuccess, onError)
     }
 
     protected operator fun <R> NoParamsUseCase<R>.invoke(
         onSuccess: (R) -> Unit = {}
     ) {
-        invoke(this@BaseViewModel, onSuccess, ::handleError)
+        invoke(this@ViewModel, onSuccess, ::handleError)
     }
 
     protected operator fun <P> UnitUseCase<P>.invoke(
@@ -124,14 +130,14 @@ abstract class BaseViewModel<State, Action, Effect>(
         onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit = ::handleError
     ) {
-        invoke(params, this@BaseViewModel, onSuccess, onError)
+        invoke(params, this@ViewModel, onSuccess, onError)
     }
 
     protected operator fun <P> UnitUseCase<P>.invoke(
         params: P,
         onSuccess: () -> Unit = {}
     ) {
-        invoke(params, this@BaseViewModel, onSuccess, ::handleError)
+        invoke(params, this@ViewModel, onSuccess, ::handleError)
     }
 
 }

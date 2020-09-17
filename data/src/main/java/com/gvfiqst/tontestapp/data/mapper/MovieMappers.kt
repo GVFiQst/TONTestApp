@@ -1,23 +1,48 @@
 package com.gvfiqst.tontestapp.data.mapper
 
+import com.gvfiqst.tontestapp.data.api.omdb.model.MovieInfoResponse
 import com.gvfiqst.tontestapp.data.api.omdb.model.MovieResponse
 import com.gvfiqst.tontestapp.data.api.omdb.model.SearchResponse
+import com.gvfiqst.tontestapp.domain.datatype.exception.MapperException
 import com.gvfiqst.tontestapp.domain.mappings.Mapper
 import com.gvfiqst.tontestapp.domain.model.Movie
+import com.gvfiqst.tontestapp.domain.model.MovieInfo
+import com.gvfiqst.tontestapp.domain.model.MovieType
 
 
 object MovieMappers {
 
-    val movieFromDto = object : Mapper<MovieResponse, Movie> {
+    val movieFromResponse = object : Mapper<MovieResponse, Movie> {
         override fun map(model: MovieResponse) = Movie(
             model.imdbId ?: "",
             model.title ?: ""
         )
     }
 
-    val searchFromDto = object : Mapper<SearchResponse, List<Movie>> {
-        override fun map(model: SearchResponse): List<Movie> {
-            return model.search.orEmpty().map(movieFromDto::map)
+    val movieInfoFromResponse = object : Mapper<MovieInfoResponse, MovieInfo> {
+        private val TYPE_MOVIE = "movie"
+        private val TYPE_SERIES = "series"
+
+        override fun map(model: MovieInfoResponse): MovieInfo {
+            val type = when (model.type) {
+                TYPE_MOVIE -> MovieType.Movie
+                TYPE_SERIES -> MovieType.Series
+                else -> MovieType.Unknown
+            }
+
+            return MovieInfo(
+                model.imdbId ?: throw MapperException("movie info has empty imbdID: $model"),
+                model.title ?: "",
+                model.year ?: "",
+                type,
+                model.poster ?: ""
+            )
+        }
+    }
+
+    val searchFromResponse = object : Mapper<SearchResponse, List<MovieInfo>> {
+        override fun map(model: SearchResponse): List<MovieInfo> {
+            return model.search.orEmpty().map(movieInfoFromResponse::map)
         }
     }
 

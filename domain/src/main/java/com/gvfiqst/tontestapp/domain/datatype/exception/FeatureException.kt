@@ -8,4 +8,10 @@ sealed class FeatureException : AppException {
     constructor(cause: Throwable) : super(cause)
 }
 
-class SearchException(message: String) : FeatureException(message)
+class SearchException(val reason: Reason, message: String) : FeatureException("reason: $reason, message: $message") {
+
+    enum class Reason {
+        TooManyResults, MovieNotFound, Unknown
+    }
+
+}
