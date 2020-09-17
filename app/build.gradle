@@ -21,6 +21,7 @@ android {
         all {
             buildConfigField 'String', 'API_URL', '"http://www.omdbapi.com/"'
             buildConfigField 'String', 'API_KEY', '"50dc75c9"' // yeah I know it's insecure...
+            buildConfigField 'String', "DB_NAME", '"tontestapp_db"'
         }
 
         release {
