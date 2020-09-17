@@ -10,4 +10,10 @@ sealed class NetworkException : AppException {
 
 class NoInternetException : NetworkException()
 
-class HttpException(val code: HttpCode, message: String) : NetworkException(message)
+class NetworkConnectionException: NetworkException {
+    constructor(message: String) : super(message)
+    constructor(message: String, cause: Throwable) : super(message, cause)
+    constructor(cause: Throwable) : super(cause)
+}
+
+class HttpResponseException(val code: HttpCode, message: String) : NetworkException("Response exception: $code $message")

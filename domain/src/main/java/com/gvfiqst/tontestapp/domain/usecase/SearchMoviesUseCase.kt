@@ -13,8 +13,7 @@ class SearchMoviesUseCase(
 ) : UseCase<SearchMoviesParams, List<Movie>>() {
 
     override suspend fun run(params: SearchMoviesParams): OpResult<List<Movie>> {
-        val result = searchRepository.findMovies(params.query)
-        return OpResult.Success(result)
+        return searchRepository.findMovies(params.query)
     }
 
 }
