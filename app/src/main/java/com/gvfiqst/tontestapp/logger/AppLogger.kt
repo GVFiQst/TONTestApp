@@ -1,7 +1,7 @@
 package com.gvfiqst.tontestapp.logger
 
 import android.util.Log
-import com.gvfiqst.tontestapp.domain.misc.Logger
+import com.gvfiqst.tontestapp.domain.util.Logger
 
 
 class AppLogger : Logger {

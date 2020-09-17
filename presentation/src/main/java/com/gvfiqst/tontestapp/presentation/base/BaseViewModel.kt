@@ -1,17 +1,19 @@
 package com.gvfiqst.tontestapp.presentation.base
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gvfiqst.tontestapp.domain.misc.Logger
 import com.gvfiqst.tontestapp.domain.usecase.base.NoParamsUnitUseCase
 import com.gvfiqst.tontestapp.domain.usecase.base.NoParamsUseCase
 import com.gvfiqst.tontestapp.domain.usecase.base.UnitUseCase
 import com.gvfiqst.tontestapp.domain.usecase.base.UseCase
-import kotlinx.coroutines.*
+import com.gvfiqst.tontestapp.domain.util.Logger
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import kotlin.coroutines.CoroutineContext
@@ -64,7 +66,7 @@ abstract class BaseViewModel<State, Action, Effect>(
 
 
     protected fun handleError(error: Throwable) {
-        // TODO: Vlad Greschuk 16/09/2020 Handle error
+        logger.e(tag, "handleError: ", RuntimeException(error))
     }
 
     protected fun State.emit() {

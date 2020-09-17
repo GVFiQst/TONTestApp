@@ -1,4 +1,4 @@
-package com.gvfiqst.tontestapp.domain.misc
+package com.gvfiqst.tontestapp.domain.util
 
 
 interface Logger {
