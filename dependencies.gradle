@@ -32,4 +32,10 @@ ext {
     okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
     okhttpLogger = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     gson = "com.google.code.gson:gson:$gson_version"
+
+    // Room
+    room_version = "2.2.5"
+    roomRuntime = "androidx.room:room-runtime:$room_version"
+    roomCompiler = "androidx.room:room-compiler:$room_version"
+    roomKtx = "androidx.room:room-ktx:$room_version"
 }
