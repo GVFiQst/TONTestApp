@@ -1,9 +1,7 @@
 package com.gvfiqst.tontestapp.presentation.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.gvfiqst.tontestapp.presentation.R
 import com.gvfiqst.tontestapp.presentation.base.ViewModelFragment
 import com.gvfiqst.tontestapp.presentation.ui.search.view.SearchResultView
@@ -30,7 +28,6 @@ class SearchFragment(
 
     private fun subscribe() {
         viewModel.uiState.observeData(this) {
-            Log.d("lox", "${it.searchResultViewData}")
             searchResultView.setData(it.searchResultViewData)
         }
 
@@ -52,7 +49,6 @@ class SearchFragment(
     }
 
     override fun onItemSelected(item: MovieInfoViewData) {
-        Toast.makeText(requireContext(), "onItemSelected(${item.title})", Toast.LENGTH_LONG).show()
     }
 
 }

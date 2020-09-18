@@ -21,4 +21,5 @@ class MarginItemDecorator(
     ) {
         outRect.set(marginLeft, marginTop, marginRight, marginBottom)
     }
+
 }

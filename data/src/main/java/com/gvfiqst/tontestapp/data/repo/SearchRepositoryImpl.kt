@@ -2,7 +2,7 @@ package com.gvfiqst.tontestapp.data.repo
 
 import com.gvfiqst.tontestapp.data.api.omdb.OmdbSearchApi
 import com.gvfiqst.tontestapp.data.mapper.MovieMappers
-import com.gvfiqst.tontestapp.data.util.OmdbPosterUriTramsform
+import com.gvfiqst.tontestapp.data.util.OmdbPosterUriTransform
 import com.gvfiqst.tontestapp.data.util.apiCall
 import com.gvfiqst.tontestapp.domain.datatype.exception.SearchException
 import com.gvfiqst.tontestapp.domain.datatype.result.*
@@ -26,7 +26,7 @@ class SearchRepositoryImpl(
                     !search.isNullOrEmpty() -> {
                         MovieMappers.searchFromResponse.map(result)
                             .asSuccessResult()
-                            .listMap { it.copy(poster = OmdbPosterUriTramsform.transform(it.poster)) }
+                            .listMap { it.copy(poster = OmdbPosterUriTransform.transform(it.poster)) }
                     }
 
                     !error.isNullOrBlank() -> {

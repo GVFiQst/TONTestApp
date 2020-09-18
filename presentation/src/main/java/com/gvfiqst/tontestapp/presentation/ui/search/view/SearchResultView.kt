@@ -18,7 +18,7 @@ import com.gvfiqst.tontestapp.presentation.R
 import com.gvfiqst.tontestapp.presentation.base.adapter.SingleViewAdapter
 import com.gvfiqst.tontestapp.presentation.ui.views.MovieInfoView
 import com.gvfiqst.tontestapp.presentation.ui.views.MovieInfoViewData
-import com.gvfiqst.tontestapp.presentation.utils.dp
+import com.gvfiqst.tontestapp.presentation.utils.dimenOffset
 import com.gvfiqst.tontestapp.presentation.utils.itemDecoration.GridMarginItemDecoration
 import com.gvfiqst.tontestapp.presentation.utils.itemDecoration.MarginItemDecorator
 import com.gvfiqst.tontestapp.presentation.utils.loggerTag
@@ -60,7 +60,7 @@ class SearchResultView @JvmOverloads constructor(
             val height = searchBar.height
             searchResultRecyclerView.setPadding(0, height, 0, 0)
             pbLoading.updateLayoutParams<LayoutParams> {
-                topMargin = height + 16.dp(context)
+                topMargin = height + context.dimenOffset(R.dimen.offset_xl)
             }
         }
     }
