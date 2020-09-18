@@ -2,13 +2,11 @@ package com.gvfiqst.tontestapp.data.repo
 
 import com.gvfiqst.tontestapp.data.api.omdb.OmdbSearchApi
 import com.gvfiqst.tontestapp.data.mapper.MovieMappers
+import com.gvfiqst.tontestapp.data.util.OmdbPosterUriTransform
 import com.gvfiqst.tontestapp.data.util.apiCall
 import com.gvfiqst.tontestapp.domain.datatype.exception.SearchException
-import com.gvfiqst.tontestapp.domain.datatype.result.OpResult
-import com.gvfiqst.tontestapp.domain.datatype.result.asErrorResult
-import com.gvfiqst.tontestapp.domain.datatype.result.asSuccessResult
-import com.gvfiqst.tontestapp.domain.datatype.result.flatMap
-import com.gvfiqst.tontestapp.domain.model.Movie
+import com.gvfiqst.tontestapp.domain.datatype.result.*
+import com.gvfiqst.tontestapp.domain.model.MovieInfo
 import com.gvfiqst.tontestapp.domain.repo.SearchRepository
 import com.gvfiqst.tontestapp.domain.util.Logger
 
@@ -18,7 +16,7 @@ class SearchRepositoryImpl(
     private val logger: Logger
 ) : SearchRepository {
 
-    override suspend fun findMovies(query: String): OpResult<List<Movie>> {
+    override suspend fun findMovies(query: String): OpResult<List<MovieInfo>> {
         return apiCall { searchApi.searchMovie(query) }
             .flatMap { result ->
                 val search = result.search
@@ -26,17 +24,24 @@ class SearchRepositoryImpl(
 
                 when {
                     !search.isNullOrEmpty() -> {
-                        MovieMappers.searchFromDto.map(result)
+                        MovieMappers.searchFromResponse.map(result)
                             .asSuccessResult()
+                            .listMap { it.copy(poster = OmdbPosterUriTransform.transform(it.poster)) }
                     }
 
                     !error.isNullOrBlank() -> {
-                        SearchException(error)
+                        val reason = when (error) {
+                            HARDCODED_REASON_MANY_RESULTS -> SearchException.Reason.TooManyResults
+                            HARDCODED_REASON_NOT_FOUND -> SearchException.Reason.MovieNotFound
+                            else -> SearchException.Reason.Unknown
+                        }
+
+                        SearchException(reason, error)
                             .asErrorResult()
                     }
 
                     else -> {
-                        SearchException("Unknown exception")
+                        SearchException(SearchException.Reason.Unknown, "Unknown exception")
                             .apply { logger.e(TAG, "Unknown exception with search $result", this) }
                             .asErrorResult()
                     }
@@ -46,6 +51,8 @@ class SearchRepositoryImpl(
 
     companion object {
         private const val TAG = "SearchRepository"
+        private const val HARDCODED_REASON_NOT_FOUND = "Movie not found!"
+        private const val HARDCODED_REASON_MANY_RESULTS = "Too many results."
     }
 
 }

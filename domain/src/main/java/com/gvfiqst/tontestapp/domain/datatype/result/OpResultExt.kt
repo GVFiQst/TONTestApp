@@ -43,6 +43,10 @@ inline fun <T, R> OpResult<T>.flatMap(block: (T) -> OpResult<R>): OpResult<R> {
     }
 }
 
+inline fun <T, R> OpResult<List<T>>.listMap(block: (T) -> R): OpResult<List<R>> {
+    return map { it.map(block) }
+}
+
 inline fun <T> OpResult<T>.onErrorReturn(block: (Throwable) -> OpResult<T>): OpResult<T> {
     if (this is OpResult.Error) {
         return block(error)

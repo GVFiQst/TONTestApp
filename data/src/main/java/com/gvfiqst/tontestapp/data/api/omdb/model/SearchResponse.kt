@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SearchResponse(
     @SerializedName("Search")
-    var search: List<MovieResponse>? = emptyList(),
+    var search: List<MovieInfoResponse>? = emptyList(),
     @SerializedName("totalResults")
     var totalResults: Int? = null,
     @SerializedName("Response")

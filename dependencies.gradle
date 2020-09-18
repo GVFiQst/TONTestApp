@@ -16,8 +16,13 @@ ext {
     app_compat_version = '1.2.0'
     appCompat = "androidx.appcompat:appcompat:$app_compat_version"
 
+    // View
+    recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+    constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0"
+    cardView = "androidx.cardview:cardview:1.0.0"
+
     // Navigation
-    nav_version = "2.3.0"
+    nav_version = '2.3.0'
     navFragment = "androidx.navigation:navigation-fragment-ktx:$nav_version"
     navUi = "androidx.navigation:navigation-ui-ktx:$nav_version"
     navSafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
@@ -41,8 +46,13 @@ ext {
     gson = "com.google.code.gson:gson:$gson_version"
 
     // Room
-    room_version = "2.2.5"
+    room_version = '2.2.5'
     roomRuntime = "androidx.room:room-runtime:$room_version"
     roomCompiler = "androidx.room:room-compiler:$room_version"
     roomKtx = "androidx.room:room-ktx:$room_version"
+
+    // Glide
+    glide_version = '4.11.0'
+    glide = "com.github.bumptech.glide:glide:$glide_version"
+    glideCompiler = "com.github.bumptech.glide:compiler:$glide_version"
 }

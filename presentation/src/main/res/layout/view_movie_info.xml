@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_width="match_parent"
+    tools:layout_height="wrap_content"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:id="@+id/imgPoster"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_info_image_height"
+        android:adjustViewBounds="false"
+        android:layout_marginBottom="@dimen/offset_m"
+        tools:background="@color/primaryColor" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/movie_info_title_text_size"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        tools:text="Blade Runner" />
+
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/offset_m"
+        android:textSize="@dimen/movie_info_description_text_size"
+        tools:text="Movie, 2019" />
+
+</merge>
