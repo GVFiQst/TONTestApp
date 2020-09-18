@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColorHint">@color/primaryHintTextColor</item>
+        <item name="background">@color/primaryColor</item>
     </style>
 
 </resources>

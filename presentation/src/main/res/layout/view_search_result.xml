@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/primaryColor"
+    tools:layout_height="match_parent"
+    tools:layout_width="match_parent"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminateTint="@android:color/white" />
+
+    <FrameLayout
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColorTransparent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/primaryLightColor"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="3dp">
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:hint="@string/search"
+                android:padding="16dp"
+                android:textColor="@color/primaryTextColor" />
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+</merge>
