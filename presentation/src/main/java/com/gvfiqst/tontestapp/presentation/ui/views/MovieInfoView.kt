@@ -1,14 +1,15 @@
 package com.gvfiqst.tontestapp.presentation.ui.views
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import android.view.View
-import android.view.View.OnClickListener
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gvfiqst.tontestapp.presentation.R
+import com.gvfiqst.tontestapp.presentation.utils.singleClickListener
 import kotlinx.android.synthetic.main.view_movie_info.view.*
 import kotlin.properties.Delegates
 
@@ -16,8 +17,9 @@ import kotlin.properties.Delegates
 class MovieInfoView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     private val glide by lazy { Glide.with(this) }
 
@@ -26,6 +28,7 @@ class MovieInfoView @JvmOverloads constructor(
     init {
         View.inflate(context, R.layout.view_movie_info, this)
 
+        orientation = VERTICAL
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 
@@ -36,7 +39,7 @@ class MovieInfoView @JvmOverloads constructor(
 
     fun setData(model: MovieInfoViewData) {
         txtTitle.text = model.title
-        txtDescription.text = "${model.type}, ${model.year}"
+        txtDescription.text = getDescriptionText(model.type, model.year)
 
         imgPoster.setImageResource(R.color.primaryColor)
         if (model.posterUrl.isNotBlank()) {
@@ -48,9 +51,33 @@ class MovieInfoView @JvmOverloads constructor(
     }
 
     private fun onCallbackChange(callback: Callback?) {
-        imgPoster?.setOnClickListener(
-            callback?.let { OnClickListener { callback.onMovieInfoClicked() } }
-        )
+        if (callback != null) {
+            imgPoster?.singleClickListener(600L, callback::onMovieInfoClicked)
+        } else {
+            imgPoster.setOnClickListener(null)
+        }
+    }
+
+    private fun getDescriptionText(type: MovieInfoViewData.MovieType, year: CharSequence): CharSequence {
+        if (type == MovieInfoViewData.MovieType.Unknown) {
+            return year
+        }
+
+        val resId = when (type) {
+            MovieInfoViewData.MovieType.Movie -> R.string.movie_info_type_movie
+            MovieInfoViewData.MovieType.Series -> R.string.movie_info_type_series
+            MovieInfoViewData.MovieType.Unknown -> throw AssertionError()
+        }
+        val typeText = context.getText(resId)
+
+        if (year.isBlank()) {
+            return typeText
+        }
+
+        return SpannableStringBuilder()
+            .append(typeText)
+            .append(", ")
+            .append(year)
     }
 
     interface Callback {

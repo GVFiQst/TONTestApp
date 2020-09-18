@@ -51,10 +51,9 @@ class SearchViewModel(
 
         val movieInfoViewData = result.map {
             val type = when (it.type) {
-                // TODO: Vlad Greschuk 18/09/2020 change with enums
-                MovieType.Movie -> "movie"
-                MovieType.Series -> "series"
-                MovieType.Unknown -> "unknown"
+                MovieType.Movie -> MovieInfoViewData.MovieType.Movie
+                MovieType.Series -> MovieInfoViewData.MovieType.Series
+                MovieType.Unknown -> MovieInfoViewData.MovieType.Unknown
             }
 
             MovieInfoViewData(it.imdbId, it.title, it.year, type, it.poster)

@@ -9,16 +9,23 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.gvfiqst.tontestapp.domain.util.Logger
 import com.gvfiqst.tontestapp.presentation.R
 import com.gvfiqst.tontestapp.presentation.base.adapter.SingleViewAdapter
 import com.gvfiqst.tontestapp.presentation.ui.views.MovieInfoView
 import com.gvfiqst.tontestapp.presentation.ui.views.MovieInfoViewData
 import com.gvfiqst.tontestapp.presentation.utils.dp
-import com.gvfiqst.tontestapp.presentation.utils.itemDecoration.GridLayoutMarginItemDecoration
+import com.gvfiqst.tontestapp.presentation.utils.itemDecoration.GridMarginItemDecoration
+import com.gvfiqst.tontestapp.presentation.utils.itemDecoration.MarginItemDecorator
+import com.gvfiqst.tontestapp.presentation.utils.loggerTag
 import com.gvfiqst.tontestapp.presentation.utils.onTextChanged
 import kotlinx.android.synthetic.main.view_search_result.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import kotlin.properties.Delegates
 
 
@@ -27,19 +34,23 @@ class SearchResultView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
+) : FrameLayout(context, attrs, defStyleAttr, defStyleRes), KoinComponent {
+
+    private val logger by inject<Logger>()
 
     var callback by Delegates.observable<Callback?>(null) { _, _, callback -> onCallbackChange(callback) }
 
     private val adapter by lazy(::createAdapter)
     private var textWatchers = mutableListOf<TextWatcher>()
 
+    private var callbacks = mutableListOf<MovieInfoViewCallback>()
+
     init {
         View.inflate(context, R.layout.view_search_result, this)
 
-        val spanCount = 3
-        searchResultRecyclerView.layoutManager = GridLayoutManager(context, spanCount)
-        searchResultRecyclerView.addItemDecoration(GridLayoutMarginItemDecoration(spanCount, 8.dp(context)))
+        if (attrs != null) {
+            parseAttrs(attrs, defStyleAttr, defStyleRes)
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -55,6 +66,7 @@ class SearchResultView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
+        clearCallbacks()
         callback = null
         super.onDetachedFromWindow()
     }
@@ -84,11 +96,10 @@ class SearchResultView @JvmOverloads constructor(
     private fun createAdapter() = SingleViewAdapter.create<MovieInfoView, MovieInfoViewData>()
         .createView { parent -> MovieInfoView(parent.context) }
         .bindView { view, data, _ ->
-            view.callback = object : MovieInfoView.Callback {
-                override fun onMovieInfoClicked() {
-                    callback?.onItemSelected(data)
-                }
-            }
+            val callback = MovieInfoViewCallback(view, this.callback, data)
+            callbacks.add(callback)
+            view.callback = callback
+
             view.setData(data)
         }
         .build()
@@ -117,6 +128,72 @@ class SearchResultView @JvmOverloads constructor(
                 }
             })
         }
+    }
+
+    private fun setupLayoutManager(recyclerView: RecyclerView, spanCount: Int, margin: Int) {
+        if (spanCount == 0) {
+            recyclerView.layoutManager = LinearLayoutManager(context)
+
+            if (margin > 0) {
+                recyclerView.addItemDecoration(MarginItemDecorator(margin))
+            }
+
+            return
+        }
+
+        recyclerView.layoutManager = GridLayoutManager(context, spanCount)
+        if (margin > 0) {
+            recyclerView.addItemDecoration(GridMarginItemDecoration(spanCount, margin))
+        }
+    }
+
+    private fun parseAttrs(attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) {
+        val arr = context.obtainStyledAttributes(attrs, R.styleable.SearchResultView, defStyleAttr, defStyleRes)
+
+        try {
+            val spanCount = arr.getInt(R.styleable.SearchResultView_srv_spanCount, 0)
+            val margin = arr.getDimensionPixelOffset(R.styleable.SearchResultView_srv_itemMargin, 0)
+            setupLayoutManager(searchResultRecyclerView, spanCount, margin)
+        } catch (e: Throwable) {
+            logger.e(loggerTag, "Error parsing attrs: ", e)
+        } finally {
+            arr.recycle()
+        }
+    }
+
+    private fun clearCallbacks() {
+        callbacks.forEach { it.clear() }
+        callbacks.clear()
+    }
+
+    private class MovieInfoViewCallback(
+        private var source: MovieInfoView? = null,
+        private var passToCallback: Callback? = null,
+        private var data: MovieInfoViewData? = null
+    ) : MovieInfoView.Callback {
+
+        override fun onMovieInfoClicked() {
+            source ?: return
+            if (source?.callback != this) {
+                clear()
+                return
+            }
+
+            val callback = passToCallback ?: return
+            val data = data ?: return
+            callback.onItemSelected(data)
+        }
+
+        fun clear() {
+            if (source?.callback == this) {
+                source?.callback = null
+            }
+
+            source = null
+            passToCallback = null
+            data = null
+        }
+
     }
 
     interface Callback {

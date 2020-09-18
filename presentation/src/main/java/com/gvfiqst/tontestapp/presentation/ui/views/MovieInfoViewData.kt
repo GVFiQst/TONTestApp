@@ -5,6 +5,12 @@ data class MovieInfoViewData(
     val id: String,
     val title: CharSequence,
     val year: CharSequence,
-    val type: CharSequence,
+    val type: MovieType,
     val posterUrl: String
-)
+) {
+
+    enum class MovieType {
+        Movie, Series, Unknown
+    }
+
+}

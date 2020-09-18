@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="card_corner_radius">3dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
+
+    <dimen name="offset_xl">16dp</dimen>
+    <dimen name="offset_l">12dp</dimen>
+    <dimen name="offset_m">8dp</dimen>
+
+    <dimen name="movie_info_image_height">180dp</dimen>
+    <dimen name="movie_info_title_text_size">10sp</dimen>
+    <dimen name="movie_info_description_text_size">10sp</dimen>
+
+    <integer name="search_result_span_count">3</integer>
+    <dimen name="search_result_item_margin">8dp</dimen>
+
+</resources>

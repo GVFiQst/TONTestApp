@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 
-class GridLayoutMarginItemDecoration(
+class GridMarginItemDecoration(
     private val spanCount: Int,
     private val margin: Int
 ) : RecyclerView.ItemDecoration() {

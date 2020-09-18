@@ -14,8 +14,8 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginStart="@dimen/offset_xl"
+        android:layout_marginEnd="@dimen/offset_xl" />
 
     <ProgressBar
         android:id="@+id/pbLoading"
@@ -33,10 +33,10 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/offset_xl"
             app:cardBackgroundColor="@color/primaryLightColor"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation">
 
             <EditText
                 android:id="@+id/edtSearch"
@@ -47,7 +47,7 @@
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:hint="@string/search"
-                android:padding="16dp"
+                android:padding="@dimen/offset_xl"
                 android:textColor="@color/primaryTextColor" />
 
         </androidx.cardview.widget.CardView>
